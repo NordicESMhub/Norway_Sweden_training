@@ -95,6 +95,22 @@ https://zenodo.org/record/3697454/files/ecv_2018.nc
 - Open *ipython_galaxy_notebook.ipynb*
 - To save your plots, data, etc. follow instructions given at the top ofthe default
     notebook( _get_ , _put_ )
+**SAVE your work regurlarly in Galaxy using ** *put*; for instance, in a notebook code cell:
+
+```
+put("ipython_galaxy_notebook.ipynb")
+```
+
+where `ipython_galaxy_notebook.ipynb` is the name of your notebook.
+
+In a similar way, do not forget to save data you cannot easily reproduce:
+
+```
+put("data.nc")
+```
+
+where `data.nc` is a netCDF file you would line to save in Galaxy.
+
 - QuitJupyterLab when you are done and go back to **[Analyze](https://live.usegalaxy.eu/)** to get your outputs
     (those you added with _put_ )
 - You can view your plot on Galaxy using ![eye icon](img/eye_galaxy.png)
