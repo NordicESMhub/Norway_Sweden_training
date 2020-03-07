@@ -1,4 +1,4 @@
-# Norway/Sweden training
+# [Norway/Sweden training](https://nordicesmhub.github.io/Norway_Sweden_training/)
 
 # http://bit.ly/C3S-NO-SE
 
