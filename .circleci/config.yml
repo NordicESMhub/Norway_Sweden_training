@@ -95,7 +95,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             # The SSH key fingerprint
-            - "81:53:e3:9f:f9:8d:82:26:a3:b8:ae:2b:92:42:8f:49"
+            - "7a:8d:7f:98:d5:6b:9a:7b:ee:56:cf:92:2e:63:d0:04"
 
       # Build the site's HTML using the base_url defined in the *book's* configuration
       - run:
