@@ -1,5 +1,9 @@
 # [Norway/Sweden training](https://nordicesmhub.github.io/Norway_Sweden_training/)
 
+[![CircleCI](https://circleci.com/gh/NordicESMhub/Norway_Sweden_training.svg?style=svg)](https://circleci.com/gh/NordicESMhub/Norway_Sweden_training)
+
+## [Download presentation C3S.pdf](C3S.pdf)
+
 # http://bit.ly/C3S-NO-SE
 
 # Data extraction and easy visualization with galaxy climate science workbench
