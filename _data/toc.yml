@@ -40,6 +40,10 @@
   - title: Farmer Carlos' olive grove - precipitation
     url: /c3s/OliveGrovePrecipitationERA5
 
+# Adds a searchbar link
+- title: Search
+  search: true
+
 # Divider for meta-pages and content page
 - divider: true
 
@@ -48,9 +52,3 @@
   url: https://github.com/NordicESMHub/Norway_Sweden_training
   external: true
   not_numbered: true
-
-# Adds a searchbar link
-- title: Search
-  search: true
-
-
