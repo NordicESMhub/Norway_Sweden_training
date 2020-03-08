@@ -32,7 +32,7 @@
 # Notebooks
 - title: How to use climate data for Olive farming in Andalusia
   url: /c3s/intro
-  not_numbered: false
+  not_numbered: true
   expand_sections: false
   sections:
   - title: Juan's olive grove - temperature
