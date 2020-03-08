@@ -26,6 +26,23 @@
   url: /intro
   not_numbered: true
 
+# Add a header and sample content section
+- header: C3S & Galaxy Training
+
+# Notebooks
+- title: How to use climate data for Olive farming in Andalusia
+  url: /c3s/intro
+  not_numbered: false
+  expand_sections: false
+  sections:
+  - title: Juan's olive grove - temperature
+    url: /c3s/OliveGroveTemperatureERA5
+  - title: Farmer Carlos' olive grove - precipitation
+    url: /c3s/OliveGrovePrecipitationERA5
+
+# Divider for meta-pages and content page
+- divider: true
+
 # External link
 - title: GitHub repository
   url: https://github.com/NordicESMHub/Norway_Sweden_training
@@ -36,8 +53,4 @@
 - title: Search
   search: true
 
-# Divider for meta-pages and content page
-- divider: true
 
-# Add a header and sample content section
-- header: C3S & Galaxy Training

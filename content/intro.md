@@ -8,23 +8,23 @@
 
 ## How do we use sticky notes?
 
-![Sticky notes](img/sticky-notes.png)
+![Sticky notes](images/sticky-notes.png)
 
 
 ## Have you heard about Galaxy?
 
-![Heard Galaxy](img/heard_Galaxy.png)
+![Heard Galaxy](images/heard_Galaxy.png)
 
 
 ## Have you ever used Galaxy?
 
-![Used Galaxy](img/used_galaxy.png)
+![Used Galaxy](images/used_galaxy.png)
 
 ## Galaxy Climate workbench
 
 #### Galaxy Interactive environment for Climate data analysis and Visualization
 
-![Climate Interactive Tools](img/livegalaxy.png)
+![Climate Interactive Tools](images/livegalaxy.png)
 
 
 ## Set up for workshop
@@ -50,7 +50,7 @@
     2. Click on "**Paste/Fetch data**"
 
 
-![Step-1: upload in galaxy](img/download_galaxy.png)
+![Step-1: upload in galaxy](images/download_galaxy.png)
 
 
 ```
@@ -58,18 +58,18 @@ https://zenodo.org/record/3697454/files/ecv_1979.nc
 https://zenodo.org/record/3697454/files/ecv_2018.nc
 ```
 
-![Step-2: Paste/Fetch data](img/paste_galaxy.png)
+![Step-2: Paste/Fetch data](images/paste_galaxy.png)
 
 - Go to <a target="_blank" href="https://live.usegalaxy.eu/?tool_id=interactive_tool_panoply">Start Panoply in Galaxy</a>
 - Select dataset *ecv_1979.nc* and press **Execute**
     - _If you do not see_ **ecv_1979.nc** _in yourhistory (right panel),_
        _make sure to first switch to the history that contains your dataset._
 
-![Switch history](img/switch_history.png)
+![Switch history](images/switch_history.png)
 
 # Wait for Panoply to be ready
  
-![Wait for Panoply to run](img/wait_run_galaxy.png)
+![Wait for Panoply to run](images/wait_run_galaxy.png)
 
 - Once running go to User --> Interactive Tools and click on *Panoply interactive tool* to launch it
 - Then use Panoply as usual.
@@ -81,8 +81,8 @@ https://zenodo.org/record/3697454/files/ecv_2018.nc
     **output** folder
 - Quit Panoply when you are done and go back to
     Analyze to get your outputs (click on **Panoply outputs** )
-- You can view your plot on Galaxy using ![eye icon](img/eye_galaxy.png)
-- You can download your plot on your laptop using ![download icon](img/save_icon_galaxy.png)
+- You can view your plot on Galaxy using ![eye icon](images/eye_galaxy.png)
+- You can download your plot on your laptop using ![download icon](images/save_icon_galaxy.png)
 
 # Pangeo JupyterLab in Galaxy
 
@@ -113,8 +113,8 @@ where `data.nc` is a netCDF file you would line to save in Galaxy.
 
 - QuitJupyterLab when you are done and go back to **[Analyze](https://live.usegalaxy.eu/)** to get your outputs
     (those you added with _put_ )
-- You can view your plot on Galaxy using ![eye icon](img/eye_galaxy.png)
-- You can download your plot on your laptop using ![download icon](img/save_icon_galaxy.png)
+- You can view your plot on Galaxy using ![eye icon](images/eye_galaxy.png)
+- You can download your plot on your laptop using ![download icon](images/save_icon_galaxy.png)
 
 A more comprehensive tutorial can be found [here](https://training.galaxyproject.org/training-material/topics/galaxy-ui/tutorials/jupyterlab/tutorial.html)
 
@@ -130,7 +130,7 @@ A more comprehensive tutorial can be found [here](https://training.galaxyproject
 
 # Feedback
 
-![Feedback](img/feedback_galaxy.png)
+![Feedback](images/feedback_galaxy.png)
 
 
 
