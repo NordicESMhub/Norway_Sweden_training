@@ -40,9 +40,27 @@
   - title: Farmer Carlos' olive grove - precipitation
     url: /c3s/OliveGrovePrecipitationERA5
 
-# Adds a searchbar link
-- title: Search
-  search: true
+- title: The alps a dying ski tourism station
+  url: /c3s/intro
+  not_numbered: true
+  expand_sections: false
+  sections:
+  - title: RATECE-PLANICA ski station (Slovenia) under CMIP-5 RCP 8.5 condition
+    url: /c3s/artificial_snow_RCP8_5_Kranksja
+  - title: RATECE-PLANICA ski station (Slovenia) under CMIP-6 SSP585 conditio
+    url: /c3s/artificial_snow_cmpi6_ssp585_Kranksja
+
+- title: Pangeo 
+  url: /pangeo/intro
+  not_numbered: true
+  expand_sections: false
+  sections:
+  - title: Basic search and load
+    url: /pangeo/basic_search_and_load
+  - title: Intake ESM example
+    url: /pangeo/intake_ESM_example
+  - title: Landsat 8 NDVI Analysis on the Cloud
+    url: /pangeo/landsat8-cog-ndvi_galaxy
 
 # Divider for meta-pages and content page
 - divider: true
