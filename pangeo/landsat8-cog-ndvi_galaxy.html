@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,minimum-scale=1">
+
+  <title>Landsat 8 NDVI Analysis on the Cloud</title>
+  <meta name="description" content="        Landsat 8 NDVI Analysis on the Cloud    Landsat 8 NDVI Analysis on the Cloud This notebook demonstrates a "Cloud-native" analysis of Normalized Diffe...">
+
+  <link rel="canonical" href="http://nordicesmhub.github.io/Norway_Sweden_training/pangeo/landsat8-cog-ndvi_galaxy.html">
+  <link rel="alternate" type="application/rss+xml" title="Galaxy Climate Workbench" href="http://nordicesmhub.github.io/Norway_Sweden_training/feed.xml">
+
+  <meta property="og:url"         content="http://nordicesmhub.github.io/Norway_Sweden_training/pangeo/landsat8-cog-ndvi_galaxy.html" />
+<meta property="og:type"        content="article" />
+<meta property="og:title"       content="Landsat 8 NDVI Analysis on the Cloud" />
+<meta property="og:description" content="        Landsat 8 NDVI Analysis on the Cloud    Landsat 8 NDVI Analysis on the Cloud This notebook demonstrates a "Cloud-native" analysis of Normalized Diffe..." />
+<meta property="og:image"       content="http://nordicesmhub.github.io/Norway_Sweden_training/images/logo/logo.png" />
+
+<meta name="twitter:card" content="summary">
+
+
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage": "http://nordicesmhub.github.io/Norway_Sweden_training/pangeo/landsat8-cog-ndvi_galaxy.html",
+  "headline": "Landsat 8 NDVI Analysis on the Cloud",
+  "datePublished": "2020-03-11T08:36:13+00:00",
+  "dateModified": "2020-03-11T08:36:13+00:00",
+  "description": "        Landsat 8 NDVI Analysis on the Cloud    Landsat 8 NDVI Analysis on the Cloud This notebook demonstrates a "Cloud-native" analysis of Normalized Diffe...",
+  "author": {
+    "@type": "Person",
+    "name": "Anne Fouilloux"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Data 100 at UC Berkeley",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://nordicesmhub.github.io/Norway_Sweden_training",
+      "width": 60,
+      "height": 60
+    }
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "http://nordicesmhub.github.io/Norway_Sweden_training",
+    "height": 60,
+    "width": 60
+  }
+}
+
+  </script>
+  <link rel="stylesheet" href="/Norway_Sweden_training/assets/css/styles.css">
+
+  <!-- <link rel="manifest" href="/manifest.json"> -->
+  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#233947">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="/Norway_Sweden_training/images/logo/favicon.ico">
+
+  <!-- MathJax Config -->
+  <!-- Allow inline math using $ and automatically break long math lines -->
+<!-- (mostly) copied from nbconvert configuration -->
+<!-- https://github.com/jupyter/nbconvert/blob/master/nbconvert/templates/html/mathjax.tpl -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true,
+        processEnvironments: true
+    },
+    // Center justify equations in code and markdown cells. Elsewhere
+    // we use CSS to left justify single line equations in code cells.
+    displayAlign: 'center',
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}},
+        linebreaks: { automatic: true },
+    },
+    
+});
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML' async></script>
+
+
+  <!-- DOM updating function -->
+  <script src="/Norway_Sweden_training/assets/js/page/dom-update.js"></script>
+
+  <!-- Selectors for elements on the page -->
+  <script src="/Norway_Sweden_training/assets/js/page/documentSelectors.js"></script>
+
+  <!-- Define some javascript variables that will be useful in other javascript -->
+  <script>
+    const site_basename = '/Norway_Sweden_training';
+  </script>
+
+  <!-- Add AnchorJS to let headers be linked -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js" async></script>
+  <script src="/Norway_Sweden_training/assets/js/page/anchors.js" async></script>
+
+  <!-- Include Turbolinks to make page loads fast -->
+  <!-- https://github.com/turbolinks/turbolinks -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js" async></script>
+  <meta name="turbolinks-cache-control" content="no-cache">
+
+  <!-- Load nbinteract for widgets -->
+  
+
+  <!-- Load Thebelab for interactive widgets -->
+  <!-- Include Thebelab for interactive code if it's enabled -->
+
+
+
+  <!-- Load the auto-generating TOC (non-async otherwise the TOC won't load w/ turbolinks) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.8.1/tocbot.min.js" async></script>
+  <script src="/Norway_Sweden_training/assets/js/page/tocbot.js"></script>
+
+  <!-- Google analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '');
+</script>
+
+
+
+  <!-- Clipboard copy button -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" async></script>
+
+  <!-- Load custom website scripts -->
+  <script src="/Norway_Sweden_training/assets/js/scripts.js" async></script>
+
+  <!-- Load custom user CSS and JS  -->
+  <script src="/Norway_Sweden_training/assets/custom/custom.js" async></script>
+  <link rel="stylesheet" href="/Norway_Sweden_training/assets/custom/custom.css">
+
+  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
+  
+
+  <!-- Lunr search code - will only be executed on the /search page -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js" async></script>
+  <script>var initQuery = function() {
+  // See if we have a search box
+  var searchInput = document.querySelector('input#lunr_search');
+  if (searchInput === null) {
+    return;
+  }
+
+  // Function to parse our lunr cache
+  var idx = lunr(function () {
+    this.field('title')
+    this.field('excerpt')
+    this.field('categories')
+    this.field('tags')
+    this.ref('id')
+
+    this.pipeline.remove(lunr.trimmer)
+
+    for (var item in store) {
+      this.add({
+        title: store[item].title,
+        excerpt: store[item].excerpt,
+        categories: store[item].categories,
+        tags: store[item].tags,
+        id: item
+      })
+    }
+  });
+
+  // Run search upon keyup
+  searchInput.addEventListener('keyup', function () {
+    var resultdiv = document.querySelector('#results');
+    var query = document.querySelector("input#lunr_search").value.toLowerCase();
+    var result =
+      idx.query(function (q) {
+        query.split(lunr.tokenizer.separator).forEach(function (term) {
+          q.term(term, { boost: 100 })
+          if(query.lastIndexOf(" ") != query.length-1){
+            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
+          }
+          if (term != ""){
+            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
+          }
+        })
+      });
+
+      // Empty the results div
+      while (resultdiv.firstChild) {
+        resultdiv.removeChild(resultdiv.firstChild);
+      }
+
+    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
+    for (var item in result) {
+      var ref = result[item].ref;
+      if(store[ref].teaser){
+        var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<div class="archive__item-teaser">'+
+                '<img src="'+store[ref].teaser+'" alt="">'+
+              '</div>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      else{
+    	  var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      resultdiv.insertAdjacentHTML('beforeend', searchitem);
+    }
+  });
+};
+
+initFunction(initQuery);
+</script>
+
+  <!-- Load JS that depends on site variables -->
+  <script src="/Norway_Sweden_training/assets/js/page/copy-button.js" async></script>
+
+  <!-- Hide cell code -->
+  <script src="/Norway_Sweden_training/assets/js/page/hide-cell.js" async></script>
+
+  <!-- Printing the screen -->
+  <!-- Include nbinteract for interactive widgets -->
+<script src="https://printjs-4de6.kxcdn.com/print.min.js" async></script>
+<script>
+printContent = () => {
+    // MathJax displays a second version of any math for assistive devices etc.
+    // This prevents double-rendering in the PDF output.
+    var ignoreAssistList = [];
+    assistives = document.querySelectorAll('.MathJax_Display span.MJX_Assistive_MathML').forEach((element, index) => {
+        var thisId = 'MathJax-assistive-' + index.toString();
+        element.setAttribute('id', thisId);
+        ignoreAssistList.push(thisId)
+    });
+
+    // Print the actual content object
+    printJS({
+        printable: 'textbook_content',
+        type: 'html',
+        css: "/Norway_Sweden_training/assets/css/styles.css",
+        style: "#textbook_content {padding-top: 40px};",
+        scanStyles: false,
+        targetStyles: ["*"],
+        ignoreElements: ignoreAssistList,
+        documentTitle: "Made with Jupyter Book"
+    })
+};
+
+initPrint = () => {
+    document.querySelector('#interact-button-print').addEventListener('click', printContent)
+}
+
+initFunction(initPrint)
+</script>
+
+</head>
+
+  <body>
+    <!-- Include the ThebeLab config so it gets reloaded on each page -->
+    <script type="text/x-thebe-config">{
+    requestKernel: true,
+    binderOptions: {
+    repo: "YOUR-ORG/YOUR-REPO",
+    ref: "gh-pages",
+    },
+    codeMirrorConfig: {
+    theme: "abcdef",
+    mode: "python"
+    },
+    kernelOptions: {
+    kernelName: "python3",
+    path: "content/pangeo"
+    }
+}
+</script>
+
+    <!-- .js-show-sidebar shows sidebar by default -->
+    <div id="js-textbook" class="c-textbook js-show-sidebar">
+      
+
+
+
+<nav id="js-sidebar" class="c-textbook__sidebar">
+  <a href="https://training.galaxyproject.org/"><img src="/Norway_Sweden_training/images/logo/logo.png" class="textbook_logo" id="sidebar-logo" alt="textbook logo" data-turbolinks-permanent/></a>
+  <h2 class="c-sidebar__title">Galaxy Climate Workbench</h2>
+  <ul class="c-sidebar__chapters">
+    
+      
+      
+
+      
+      
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter" data-url="/intro">
+        <a class="c-sidebar__entry"
+          href="/Norway_Sweden_training/intro.html"
+        >
+          
+          Home
+        </a>
+      </li>
+
+      
+      
+
+      
+
+      
+      
+
+      
+
+      
+    
+      
+      
+        <li><h2 class="c-sidebar__title">C3S & Galaxy Training</li>
+        
+      
+      
+
+      
+      
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter" data-url="/c3s/intro">
+        <a class="c-sidebar__entry"
+          href="/Norway_Sweden_training/c3s/intro.html"
+        >
+          
+          How to use climate data for Olive farming in Andalusia
+        </a>
+      </li>
+
+      
+      
+
+      
+
+      
+      
+
+      
+        
+
+        
+
+        <ul class="c-sidebar__sections u-hidden-visually">
+          
+            
+            
+
+            
+            
+            
+            
+
+            <li class="c-sidebar__section" data-url="/c3s/OliveGroveTemperatureERA5">
+              <a class="c-sidebar__entry"
+                href="/Norway_Sweden_training/c3s/OliveGroveTemperatureERA5.html"
+              >
+                
+                Juan's olive grove - temperature
+              </a>
+            </li>
+            
+            
+          
+            
+            
+
+            
+            
+            
+            
+
+            <li class="c-sidebar__section" data-url="/c3s/OliveGrovePrecipitationERA5">
+              <a class="c-sidebar__entry"
+                href="/Norway_Sweden_training/c3s/OliveGrovePrecipitationERA5.html"
+              >
+                
+                Farmer Carlos' olive grove - precipitation
+              </a>
+            </li>
+            
+            
+          
+        </ul>
+      
+
+      
+    
+      
+      
+
+      
+      
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter" data-url="/c3s/intro">
+        <a class="c-sidebar__entry"
+          href="/Norway_Sweden_training/c3s/intro.html"
+        >
+          
+          How to use climate data for Olive farming in Andalusia
+        </a>
+      </li>
+
+      
+      
+
+      
+
+      
+      
+
+      
+        
+
+        
+
+        <ul class="c-sidebar__sections u-hidden-visually">
+          
+            
+            
+
+            
+            
+            
+            
+
+            <li class="c-sidebar__section" data-url="/c3s/artificial_snow_RCP8_5_Kranksja">
+              <a class="c-sidebar__entry"
+                href="/Norway_Sweden_training/c3s/artificial_snow_RCP8_5_Kranksja.html"
+              >
+                
+                RATECE-PLANICA ski station (Slovenia) under CMIP-5 RCP 8.5 condition
+              </a>
+            </li>
+            
+            
+          
+            
+            
+
+            
+            
+            
+            
+
+            <li class="c-sidebar__section" data-url="/c3s/artificial_snow_cmpi6_ssp585_Kranksja">
+              <a class="c-sidebar__entry"
+                href="/Norway_Sweden_training/c3s/artificial_snow_cmpi6_ssp585_Kranksja.html"
+              >
+                
+                RATECE-PLANICA ski station (Slovenia) under CMIP-6 SSP585 conditio
+              </a>
+            </li>
+            
+            
+          
+        </ul>
+      
+
+      
+    
+      
+      
+
+      
+      
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter" data-url="/pangeo/intro">
+        <a class="c-sidebar__entry"
+          href="/Norway_Sweden_training/pangeo/intro.html"
+        >
+          
+          Pangeo
+        </a>
+      </li>
+
+      
+      
+
+      
+
+      
+      
+
+      
+        
+
+        
+
+        <ul class="c-sidebar__sections u-hidden-visually">
+          
+            
+            
+
+            
+            
+            
+            
+
+            <li class="c-sidebar__section" data-url="/pangeo/basic_search_and_load">
+              <a class="c-sidebar__entry"
+                href="/Norway_Sweden_training/pangeo/basic_search_and_load.html"
+              >
+                
+                Basic search and load
+              </a>
+            </li>
+            
+            
+          
+            
+            
+
+            
+            
+            
+            
+
+            <li class="c-sidebar__section" data-url="/pangeo/intake_ESM_example">
+              <a class="c-sidebar__entry"
+                href="/Norway_Sweden_training/pangeo/intake_ESM_example.html"
+              >
+                
+                Intake ESM example
+              </a>
+            </li>
+            
+            
+          
+            
+            
+
+            
+            
+            
+            
+
+            <li class="c-sidebar__section" data-url="/pangeo/landsat8-cog-ndvi_galaxy">
+              <a class="c-sidebar__entry"
+                href="/Norway_Sweden_training/pangeo/landsat8-cog-ndvi_galaxy.html"
+              >
+                
+                Landsat 8 NDVI Analysis on the Cloud
+              </a>
+            </li>
+            
+            
+          
+        </ul>
+      
+
+      
+    
+      
+      
+        <li class="c-sidebar__divider"></li>
+        
+      
+      
+
+      
+      
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter" data-url="https://github.com/NordicESMHub/Norway_Sweden_training">
+        <a class="c-sidebar__entry"
+          href="https://github.com/NordicESMHub/Norway_Sweden_training"
+        >
+          
+          GitHub repository
+        </a>
+      </li>
+
+      
+      
+
+      
+
+      
+      
+
+      
+
+      
+    
+  </ul>
+  <p class="sidebar_footer">Powered by <a href="https://jupyterbook.org">Jupyter Book</a></p>
+</nav>
+
+      
+      <div class="c-topbar" id="top-navbar">
+  <!-- We show the sidebar by default so we use .is-active -->
+  <div class="c-topbar__buttons">
+    <button
+      id="js-sidebar-toggle"
+      class="hamburger hamburger--arrowalt is-active"
+    >
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
+    </button>
+    <div class="buttons">
+<div class="download-buttons-dropdown">
+    <button id="dropdown-button-trigger" class="interact-button"><img src="/Norway_Sweden_training/assets/images/download-solid.svg" alt="Download" /></button>
+    <div class="download-buttons">
+        <a href="/Norway_Sweden_training/content/pangeo/landsat8-cog-ndvi_galaxy.ipynb" download>
+        <button id="interact-button-download" class="interact-button">.ipynb</button>
+        </a>
+        
+        <a id="interact-button-print"><button id="interact-button-download" class="interact-button">.pdf</button></a>
+    </div>
+</div>
+
+
+  
+  
+  
+  
+
+
+</div>
+
+  </div>
+  <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
+  <aside class="sidebar__right">
+    <header><h4 class="nav__title"><img src="/Norway_Sweden_training/assets/images/list-solid.svg" alt="Search" />   On this page</h4></header>
+    <nav class="onthispage">
+    </nav>
+  </aside>
+  <a href="/Norway_Sweden_training/search.html" class="topbar-right-button" id="search-button">
+    <img src="/Norway_Sweden_training/assets/images/search-solid.svg" alt="Search" />
+  </a>
+</div>
+
+      <main class="c-textbook__page" tabindex="-1">
+            <div class="c-textbook__content" id="textbook_content">
+                  <main class="jupyter-page">
+    <div id="page-info"><div id="page-title">Landsat 8 NDVI Analysis on the Cloud</div>
+</div>
+    <div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Landsat-8-NDVI-Analysis-on-the-Cloud">Landsat 8 NDVI Analysis on the Cloud<a class="anchor-link" href="#Landsat-8-NDVI-Analysis-on-the-Cloud"> </a></h1><p>This notebook demonstrates a "Cloud-native" analysis of <a href="https://en.wikipedia.org/wiki/Normalized_difference_vegetation_index">Normalized Difference Vegetation Index (NDVI)</a> using Landsat 8 data.</p>
+<p><strong>What is unique about this workflow is that no data is downloaded to our local computer! All calculations are performed in memory across many distributed machines on the Google Cloud.</strong></p>
+<p>This workflow is possible because the Landsat 8 data is stored in <a href="http://www.cogeo.org">Cloud-Optimized Geotiff</a> format, which can be accessed remotely via <a href="http://xarray.pydata.org/en/stable/">xarray</a> and <a href="https://rasterio.readthedocs.io/en/latest/">rasterio</a> Python libraries. Distributed computing is enabled through a <a href="http://pangeo-data.org">Pangeo</a> JupyterHub deployment with <a href="https://github.com/dask/dask-kubernetes">Dask Kubernetes</a>.</p>
+<p>About Landsat 8:
+<a href="https://landsat.usgs.gov/landsat-8">https://landsat.usgs.gov/landsat-8</a></p>
+<p>About the Landsat archive:
+<a href="https://cloud.google.com/storage/docs/public-datasets/landsat">https://cloud.google.com/storage/docs/public-datasets/landsat</a></p>
+<p>Date: August 30, 2018</p>
+<p>Created by:
+Scott Henderson (scottyh@uw.edu), Daniel Rothenberg</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import required libraries</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">rasterio</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">wait</span><span class="p">,</span> <span class="n">progress</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Print package versions</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Xarray version: &#39;</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Rasterio version: &#39;</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Xarray version:  0.14.1
+Rasterio version:  1.0.25
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Set environment variables for cloud-optimized-geotiffs efficiency</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;GDAL_DISABLE_READDIR_ON_OPEN&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;YES&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;CPL_VSIL_CURL_ALLOWED_EXTENSIONS&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;TIF&#39;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Use-NASA-Common-Metadata-Repository-(CMR)-to-get-Landsat-8-images">Use NASA Common Metadata Repository (CMR) to get Landsat 8 images<a class="anchor-link" href="#Use-NASA-Common-Metadata-Repository-(CMR)-to-get-Landsat-8-images"> </a></h2><p><a href="https://earthdata.nasa.gov/about/science-system-description/eosdis-components/common-metadata-repository">NASA CMR</a> is a new unified way to search for remote sensing assests across many archive centers. If you prefer a graphical user interface, NASA <a href="https://search.earthdata.nasa.gov/search">Earthdata Search</a> is built on top of CMR. CMR returns download links through the USGS (<a href="https://earthexplorer.usgs.gov">https://earthexplorer.usgs.gov</a>), but the same archive is mirrored as a (Google Public Dataset)[<a href="https://cloud.google.com/storage/docs/public-datasets/landsat">https://cloud.google.com/storage/docs/public-datasets/landsat</a>], so we'll make a function that queries CMR and returns URLs to the imagery stored on Google Cloud.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">query_cmr_landsat</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="s1">&#39;Landsat_8_OLI_TIRS_C1&#39;</span><span class="p">,</span><span class="n">tier</span><span class="o">=</span><span class="s1">&#39;T1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="mi">47</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">27</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Query NASA CMR for Collection1, Tier1 Landsat scenes from a specific path and row.&quot;&quot;&quot;</span>
+    
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;short_name=</span><span class="si">{</span><span class="n">collection</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;page_size=2000&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;attribute[]=string,CollectionCategory,</span><span class="si">{</span><span class="n">tier</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;attribute[]=int,WRSPath,</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;attribute[]=int,WRSRow,</span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+           <span class="p">]</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;https://cmr.earthdata.nasa.gov/search/granules.json?&#39;</span> <span class="o">+</span> <span class="s1">&#39;&amp;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;feed&#39;</span><span class="p">][</span><span class="s1">&#39;entry&#39;</span><span class="p">])</span>
+    
+    <span class="c1"># Save results to a file</span>
+    <span class="c1">#print(&#39;Saved results to cmr-result.json&#39;)</span>
+    <span class="c1">#with open(&#39;cmr-result.json&#39;, &#39;w&#39;) as j:</span>
+    <span class="c1">#    j.write(r.text)</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_google_archive</span><span class="p">(</span><span class="n">pids</span><span class="p">,</span> <span class="n">bands</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Turn list of product_ids into pandas dataframe for NDVI analysis.&quot;&quot;&quot;</span>
+    
+    <span class="n">path</span> <span class="o">=</span>  <span class="n">pids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">row</span> <span class="o">=</span>  <span class="n">pids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+    <span class="n">baseurl</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://storage.googleapis.com/gcp-public-data-landsat/LC08/01/0</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">/0</span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s1">&#39;</span>
+    
+    <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pids</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">product_id</span><span class="o">=</span><span class="n">pids</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">dates</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">band</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">baseurl</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">band</span><span class="si">}</span><span class="s1">.TIF&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pids</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">query_cmr_landsat</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>https://cmr.earthdata.nasa.gov/search/granules.json?short_name=Landsat_8_OLI_TIRS_C1&amp;page_size=2000&amp;attribute%5B%5D=string,CollectionCategory,T1&amp;attribute%5B%5D=int,WRSPath,47&amp;attribute%5B%5D=int,WRSRow,27
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pids</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">make_google_archive</span><span class="p">(</span><span class="n">pids</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;B4&#39;</span><span class="p">,</span> <span class="s1">&#39;B5&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>product_id</th>
+      <th>date</th>
+      <th>B4</th>
+      <th>B5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>LC08_L1TP_047027_20130421_20170310_01_T1</td>
+      <td>2013-04-21</td>
+      <td>https://storage.googleapis.com/gcp-public-data...</td>
+      <td>https://storage.googleapis.com/gcp-public-data...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>LC08_L1TP_047027_20130523_20170310_01_T1</td>
+      <td>2013-05-23</td>
+      <td>https://storage.googleapis.com/gcp-public-data...</td>
+      <td>https://storage.googleapis.com/gcp-public-data...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>LC08_L1TP_047027_20130608_20170310_01_T1</td>
+      <td>2013-06-08</td>
+      <td>https://storage.googleapis.com/gcp-public-data...</td>
+      <td>https://storage.googleapis.com/gcp-public-data...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>LC08_L1TP_047027_20130624_20170309_01_T1</td>
+      <td>2013-06-24</td>
+      <td>https://storage.googleapis.com/gcp-public-data...</td>
+      <td>https://storage.googleapis.com/gcp-public-data...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>LC08_L1TP_047027_20130710_20180201_01_T1</td>
+      <td>2013-07-10</td>
+      <td>https://storage.googleapis.com/gcp-public-data...</td>
+      <td>https://storage.googleapis.com/gcp-public-data...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Launch-Dask-Kubernetes-Cluster">Launch Dask Kubernetes Cluster<a class="anchor-link" href="#Launch-Dask-Kubernetes-Cluster"> </a></h2><p>This will allow us to distribute our analysis across many machines. In the default configuration for Pangeo Binder, each worker has 2 vCPUs and 7Gb of RAM. It may take several minutes to initialize these workers and make them available to Dask.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Select 10 &#39;workers&#39; under &#39;manual scaling&#39; menu below and click &#39;Scale&#39;</span>
+<span class="c1"># Click on the &#39;Dashboard link&#39; to monitor calculation progress</span>
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">n_workers</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">threads_per_worker</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">memory_limit</span><span class="o">=</span><span class="s1">&#39;60GB&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/opt/conda/lib/python3.7/site-packages/distributed/dashboard/core.py:72: UserWarning: 
+Port 8787 is already in use. 
+Perhaps you already have a cluster running?
+Hosting the diagnostics dashboard on a random port instead.
+  warnings.warn(&#34;\n&#34; + msg)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Examine-a-single-band-Landsat-image">Examine a single band Landsat image<a class="anchor-link" href="#Examine-a-single-band-Landsat-image"> </a></h2><p>The <em>rasterio</em> library allows us to read Geotiffs on the web without downloading the entire image. <em>Xarray</em> has a built-in load_rasterio() function that allows us to open the file as a DataArray. Xarray also uses Dask for lazy reading, so we want to make sure the native block tiling of the image matches the dask "chunk size". These dask chunks are automatically distributed among all our workers when a computation is requested, so ideally they will fit in the worker memory. A chunk size of 2048x2048 with a float32 datatype implies a 16Mb array.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Load with rasterio</span>
+<span class="n">image_url</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;B4&#39;</span><span class="p">]</span>
+<span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&#39;driver&#39;: &#39;GTiff&#39;, &#39;dtype&#39;: &#39;uint16&#39;, &#39;nodata&#39;: None, &#39;width&#39;: 7751, &#39;height&#39;: 7531, &#39;count&#39;: 1, &#39;crs&#39;: CRS.from_epsg(32610), &#39;transform&#39;: Affine(30.0, 0.0, 356685.0,
+       0.0, -30.0, 5367615.0), &#39;blockxsize&#39;: 256, &#39;blockysize&#39;: 256, &#39;tiled&#39;: True, &#39;compress&#39;: &#39;lzw&#39;, &#39;interleave&#39;: &#39;band&#39;}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Note that the blocksize of the image is 256 by 256, so we want xarray to use some multiple of that</span>
+<span class="n">xchunk</span> <span class="o">=</span> <span class="mi">2048</span>
+<span class="n">ychunk</span> <span class="o">=</span> <span class="mi">2048</span>
+<span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">image_url</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;band&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">xchunk</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">ychunk</span><span class="p">})</span>
+<span class="n">da</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (band: 1, y: 7531, x: 7751)&gt;
+dask.array&lt;open_rasterio-300db2d3cf5eb9b367129b8fd5022dab&lt;this-array&gt;, shape=(1, 7531, 7751), dtype=uint16, chunksize=(1, 2048, 2048), chunktype=numpy.ndarray&gt;
+Coordinates:
+  * band     (band) int64 1
+  * y        (y) float64 5.368e+06 5.368e+06 5.368e+06 ... 5.142e+06 5.142e+06
+  * x        (x) float64 3.567e+05 3.567e+05 3.568e+05 ... 5.892e+05 5.892e+05
+Attributes:
+    transform:      (30.0, 0.0, 356685.0, 0.0, -30.0, 5367615.0)
+    crs:            +init=epsg:32610
+    res:            (30.0, 30.0)
+    is_tiled:       1
+    nodatavals:     (nan,)
+    scales:         (1.0,)
+    offsets:        (0.0,)
+    AREA_OR_POINT:  Point</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># If we request to compute something or plot these arrays, the necessary data chunks will be accessed on cloud storage:</span>
+<span class="c1"># Watch the KubeCluster dashboard to see the worker activity when this command is run:</span>
+<span class="c1"># Note that no data is stored on the disk here, it&#39;s all in memory</span>
+<span class="n">da</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.image.AxesImage at 0x7fc6a05493c8&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/pangeo/landsat8-cog-ndvi_galaxy_15_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Load-all-Landsat-bands-into-an-xarray-dataset">Load all Landsat bands into an xarray dataset<a class="anchor-link" href="#Load-all-Landsat-bands-into-an-xarray-dataset"> </a></h2><p>Often we want to analyze a time series of satellite imagery, but we are constrained by computational resources. So we either download all the images, extract a small subset and then do our analysis. Or, we coarsen the resolution of all our images so that the entire set fits into our computer RAM. Because this notebook is running on Google Cloud with access to many resources in our Kube Cluster, we no longer have to worry about the computational constraints, and can conduct our analysis at full resoution!</p>
+<p>First we need to construct an xarray dataset object (which has data variables 'band4' and 'band5' in a n-dimensional array with x-coordinates representing UTM easting, y-coordinates representing UTM northing, and a time coordinate representing the image acquisition date).</p>
+<p>There are different ways to go about this, but we will load our images with a timestamp index since each image is taken on a different date. Typically, this is a chore if our images are not on the same grid to begin with, but xarray knows how to automatically align images based on their georeferenced coordinates.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Note that these landsat images are not necessarily the same shape or on the same grid:</span>
+<span class="k">for</span> <span class="n">image_url</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">B4</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(7531, 7751) BoundingBox(left=356685.0, bottom=5141685.0, right=589215.0, top=5367615.0)
+(7541, 7751) BoundingBox(left=353385.0, bottom=5141685.0, right=585915.0, top=5367915.0)
+(7541, 7751) BoundingBox(left=354285.0, bottom=5141385.0, right=586815.0, top=5367615.0)
+(7531, 7751) BoundingBox(left=356385.0, bottom=5141685.0, right=588915.0, top=5367615.0)
+(7971, 7861) BoundingBox(left=353985.0, bottom=5135085.0, right=589815.0, top=5374215.0)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_multiband_dataset</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;B4&#39;</span><span class="p">,</span><span class="s1">&#39;B5&#39;</span><span class="p">],</span> <span class="n">chunks</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;band&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">2048</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">2048</span><span class="p">}):</span>
+    <span class="sd">&#39;&#39;&#39;A function to load multiple landsat bands into an xarray dataset &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Each image is a dataset containing both band4 and band5</span>
+    <span class="n">datasets</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">bands</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">band</span><span class="p">]</span>
+        <span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="n">chunks</span><span class="p">)</span>
+        <span class="n">da</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="s1">&#39;band&#39;</span><span class="p">)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">band</span><span class="p">)</span>
+        <span class="n">datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+
+    <span class="n">DS</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">DS</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Merge all acquisitions into a single large Dataset</span>
+<span class="n">datasets</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;loading...&#39;</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">create_multiband_dataset</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="n">datasets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ERROR loading, skipping acquistion!&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>loading... 2013-04-21 00:00:00
+loading... 2013-05-23 00:00:00
+loading... 2013-06-08 00:00:00
+loading... 2013-06-24 00:00:00
+loading... 2013-07-10 00:00:00
+loading... 2013-07-26 00:00:00
+loading... 2013-08-11 00:00:00
+loading... 2013-08-27 00:00:00
+loading... 2013-09-12 00:00:00
+loading... 2013-10-14 00:00:00
+loading... 2013-10-30 00:00:00
+loading... 2014-01-02 00:00:00
+loading... 2014-01-18 00:00:00
+loading... 2014-02-03 00:00:00
+loading... 2014-02-19 00:00:00
+loading... 2014-03-07 00:00:00
+loading... 2014-03-23 00:00:00
+loading... 2014-04-08 00:00:00
+loading... 2014-04-24 00:00:00
+loading... 2014-05-10 00:00:00
+loading... 2014-05-26 00:00:00
+loading... 2014-06-11 00:00:00
+loading... 2014-06-27 00:00:00
+loading... 2014-07-13 00:00:00
+loading... 2014-07-29 00:00:00
+loading... 2014-08-14 00:00:00
+loading... 2014-09-15 00:00:00
+loading... 2014-10-01 00:00:00
+loading... 2014-11-18 00:00:00
+loading... 2015-01-21 00:00:00
+loading... 2015-02-22 00:00:00
+loading... 2015-03-10 00:00:00
+loading... 2015-03-26 00:00:00
+loading... 2015-04-11 00:00:00
+loading... 2015-04-27 00:00:00
+loading... 2015-05-29 00:00:00
+loading... 2015-06-14 00:00:00
+loading... 2015-06-30 00:00:00
+loading... 2015-07-16 00:00:00
+loading... 2015-08-01 00:00:00
+loading... 2015-08-17 00:00:00
+loading... 2015-09-02 00:00:00
+loading... 2015-09-18 00:00:00
+loading... 2015-10-04 00:00:00
+loading... 2015-10-20 00:00:00
+loading... 2015-11-05 00:00:00
+loading... 2015-11-21 00:00:00
+loading... 2015-12-23 00:00:00
+loading... 2016-01-08 00:00:00
+loading... 2016-01-24 00:00:00
+loading... 2016-02-09 00:00:00
+loading... 2016-02-25 00:00:00
+loading... 2016-03-12 00:00:00
+loading... 2016-03-28 00:00:00
+loading... 2016-04-13 00:00:00
+loading... 2016-04-29 00:00:00
+loading... 2016-05-31 00:00:00
+loading... 2016-06-16 00:00:00
+loading... 2016-07-02 00:00:00
+loading... 2016-07-18 00:00:00
+loading... 2016-08-03 00:00:00
+loading... 2016-08-19 00:00:00
+loading... 2016-09-04 00:00:00
+loading... 2016-09-20 00:00:00
+loading... 2016-10-22 00:00:00
+loading... 2016-11-07 00:00:00
+loading... 2016-11-23 00:00:00
+loading... 2016-12-25 00:00:00
+loading... 2017-01-10 00:00:00
+loading... 2017-01-26 00:00:00
+loading... 2017-02-11 00:00:00
+loading... 2017-03-31 00:00:00
+loading... 2017-04-16 00:00:00
+loading... 2017-05-02 00:00:00
+loading... 2017-05-18 00:00:00
+loading... 2017-06-03 00:00:00
+loading... 2017-06-19 00:00:00
+loading... 2017-07-05 00:00:00
+loading... 2017-07-21 00:00:00
+loading... 2017-08-06 00:00:00
+loading... 2017-08-22 00:00:00
+loading... 2017-09-07 00:00:00
+loading... 2017-09-23 00:00:00
+loading... 2017-10-09 00:00:00
+loading... 2017-10-25 00:00:00
+loading... 2017-11-10 00:00:00
+loading... 2017-12-12 00:00:00
+loading... 2018-01-13 00:00:00
+loading... 2018-02-14 00:00:00
+loading... 2018-03-02 00:00:00
+loading... 2018-03-18 00:00:00
+loading... 2018-04-03 00:00:00
+loading... 2018-04-19 00:00:00
+loading... 2018-05-05 00:00:00
+loading... 2018-05-21 00:00:00
+loading... 2018-06-06 00:00:00
+loading... 2018-06-22 00:00:00
+loading... 2018-07-08 00:00:00
+loading... 2018-07-24 00:00:00
+loading... 2018-08-09 00:00:00
+loading... 2018-09-10 00:00:00
+loading... 2018-09-26 00:00:00
+loading... 2018-10-12 00:00:00
+loading... 2018-10-28 00:00:00
+loading... 2018-11-13 00:00:00
+loading... 2018-11-29 00:00:00
+loading... 2018-12-15 00:00:00
+loading... 2018-12-31 00:00:00
+loading... 2019-01-16 00:00:00
+loading... 2019-02-17 00:00:00
+loading... 2019-03-05 00:00:00
+loading... 2019-03-21 00:00:00
+loading... 2019-04-06 00:00:00
+loading... 2019-05-08 00:00:00
+loading... 2019-06-09 00:00:00
+loading... 2019-06-25 00:00:00
+loading... 2019-07-27 00:00:00
+loading... 2019-08-12 00:00:00
+loading... 2019-08-28 00:00:00
+loading... 2019-09-29 00:00:00
+loading... 2019-10-15 00:00:00
+loading... 2019-10-31 00:00:00
+loading... 2019-12-02 00:00:00
+loading... 2020-01-03 00:00:00
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">DS</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">datasets</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dataset size (Gb): &#39;</span><span class="p">,</span> <span class="n">DS</span><span class="o">.</span><span class="n">nbytes</span><span class="o">/</span><span class="mf">1e9</span><span class="p">)</span>
+<span class="n">DS</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Dataset size (Gb):  128.429391872
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.Dataset&gt;
+Dimensions:  (time: 124, x: 8121, y: 7971)
+Coordinates:
+  * y        (y) float64 5.135e+06 5.135e+06 5.135e+06 ... 5.374e+06 5.374e+06
+  * x        (x) float64 3.492e+05 3.492e+05 3.493e+05 ... 5.928e+05 5.928e+05
+  * time     (time) datetime64[ns] 2013-04-21 2013-05-23 ... 2020-01-03
+Data variables:
+    B4       (time, y, x) float64 dask.array&lt;chunksize=(1, 1607, 2048), meta=np.ndarray&gt;
+    B5       (time, y, x) float64 dask.array&lt;chunksize=(1, 1607, 2048), meta=np.ndarray&gt;</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Note-that-xarray-has-automatically-expanded-the-dimensions-to-include-the-maximum-extents-of-all-the-images,-also-the-chunksize-has-been-automatically-adjusted.">Note that xarray has automatically expanded the dimensions to include the maximum extents of all the images, also the chunksize has been automatically adjusted.<a class="anchor-link" href="#Note-that-xarray-has-automatically-expanded-the-dimensions-to-include-the-maximum-extents-of-all-the-images,-also-the-chunksize-has-been-automatically-adjusted."> </a></h3><p>There is definitely some room for improvement here from a computational efficiency standpoint - in particular the dask chunks are no longer aligned with the image tiles. This is because each image starts at different coordinates and has different shapes, but xarray uses a single chunk size for the entire datasets. There will also be many zeros in this dataset, so future work could take advantage of sparse arrays.</p>
+<p>These points aside, our KubeCluster will automatically parallelize our computations for us, so we can not worry too much about optimal efficiency and just go ahead and run our analysis!</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Here is the syntax to plot the same image as before</span>
+<span class="c1"># Again, the actually image data is downloaded from cloud storage to memory</span>
+<span class="n">da</span> <span class="o">=</span> <span class="n">DS</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;2013-04-21&#39;</span><span class="p">)[</span><span class="s1">&#39;B4&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Image size (Gb): &#39;</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">nbytes</span><span class="o">/</span><span class="mf">1e9</span><span class="p">)</span>
+<span class="n">da</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Image size (Gb):  0.517859928
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.image.AxesImage at 0x7fc627db9630&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/pangeo/landsat8-cog-ndvi_galaxy_22_2.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Distributed-NDVI-computations">Distributed NDVI computations<a class="anchor-link" href="#Distributed-NDVI-computations"> </a></h2><p>Set up our NDVI dataset. Note that NDVI is not actually computed until we call the Dask compute(), persist(), or call other functions such as plot() that require actually operate on the data!</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">NDVI</span> <span class="o">=</span> <span class="p">(</span><span class="n">DS</span><span class="p">[</span><span class="s1">&#39;B5&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">DS</span><span class="p">[</span><span class="s1">&#39;B4&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">DS</span><span class="p">[</span><span class="s1">&#39;B5&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">DS</span><span class="p">[</span><span class="s1">&#39;B4&#39;</span><span class="p">])</span>
+<span class="n">NDVI</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (time: 124, y: 7971, x: 8121)&gt;
+dask.array&lt;truediv, shape=(124, 7971, 8121), dtype=float64, chunksize=(1, 2048, 2048), chunktype=numpy.ndarray&gt;
+Coordinates:
+  * y        (y) float64 5.135e+06 5.135e+06 5.135e+06 ... 5.374e+06 5.374e+06
+  * x        (x) float64 3.492e+05 3.492e+05 3.493e+05 ... 5.928e+05 5.928e+05
+  * time     (time) datetime64[ns] 2013-04-21 2013-05-23 ... 2020-01-03</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Plot-NDVI-on-specific-date-(full-resolution)">Plot NDVI on specific date (full resolution)<a class="anchor-link" href="#Plot-NDVI-on-specific-date-(full-resolution)"> </a></h3><p>Only data for a single landsat acquisition date is pulled from Cloud storage</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">NDVI</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;2013-04-21&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.image.AxesImage at 0x7fc625492438&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/pangeo/landsat8-cog-ndvi_galaxy_26_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Mean-NDVI-for-a-range-of-dates">Mean NDVI for a range of dates<a class="anchor-link" href="#Mean-NDVI-for-a-range-of-dates"> </a></h3><p>This example calculates the mean NDVI per-pixel (30m) for 2013-2014, storing result in local RAM</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ndvi</span> <span class="o">=</span> <span class="n">NDVI</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s1">&#39;2013-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2014-01-01&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;projected dataset size (Gb): &#39;</span><span class="p">,</span> <span class="n">ndvi</span><span class="o">.</span><span class="n">nbytes</span><span class="o">/</span><span class="mf">1e9</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>projected dataset size (Gb):  0.517859928
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ndvi</span><span class="p">)</span>
+<span class="n">ndvi</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">()</span>
+
+<span class="c1"># Point of interest we&#39;ll extract a timeseries from</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">562370</span><span class="p">,</span> <span class="mi">5312519</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;xarray.DataArray (y: 7971, x: 8121)&gt;
+dask.array&lt;mean_agg-aggregate, shape=(7971, 8121), dtype=float64, chunksize=(2048, 2048), chunktype=numpy.ndarray&gt;
+Coordinates:
+  * y        (y) float64 5.135e+06 5.135e+06 5.135e+06 ... 5.374e+06 5.374e+06
+  * x        (x) float64 3.492e+05 3.492e+05 3.493e+05 ... 5.928e+05 5.928e+05
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&lt;matplotlib.lines.Line2D at 0x7fc603e10748&gt;]</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/pangeo/landsat8-cog-ndvi_galaxy_29_2.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Extract-region-of-interest-Farmland-near-Everett,-WA-(Ebey-Island)-and-resample-to-monthly-mean-average">Extract region of interest Farmland near Everett, WA (Ebey Island) and resample to monthly mean average<a class="anchor-link" href="#Extract-region-of-interest-Farmland-near-Everett,-WA-(Ebey-Island)-and-resample-to-monthly-mean-average"> </a></h3><p>We expect to see higher NDVI values in the summer months, corresponding to dense vegetation</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># https://www.geoplaner.com</span>
+<span class="c1"># lat, lon to northing, easting</span>
+<span class="c1"># 47.962940 --&gt; 5312519</span>
+<span class="c1"># -122.164483--&gt; 562370</span>
+<span class="c1">#+ 5 km buffer</span>
+<span class="c1">#EPSG:32610 WGS 84 / UTM zone 10N</span>
+<span class="n">xcen</span> <span class="o">=</span> <span class="mi">562370</span>
+<span class="n">ycen</span> <span class="o">=</span> <span class="mi">5312519</span>
+<span class="n">buf</span> <span class="o">=</span> <span class="mi">5000</span>  <span class="c1"># look at point +/- 5km</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">NDVI</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">xcen</span><span class="o">-</span><span class="n">buf</span><span class="p">,</span><span class="n">xcen</span><span class="o">+</span><span class="n">buf</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">ycen</span><span class="o">-</span><span class="n">buf</span><span class="p">,</span><span class="n">ycen</span><span class="o">+</span><span class="n">buf</span><span class="p">))</span>
+<span class="n">timeseries</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s1">&#39;1MS&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">timeseries</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<pre>&lt;xarray.DataArray (time: 82, y: 333, x: 334)&gt;
+dask.array&lt;where, shape=(82, 333, 334), dtype=float64, chunksize=(3, 175, 334), chunktype=numpy.ndarray&gt;
+Coordinates:
+  * time     (time) datetime64[ns] 2013-04-01 2013-05-01 ... 2020-01-01
+  * y        (y) float64 5.308e+06 5.308e+06 5.308e+06 ... 5.317e+06 5.318e+06
+  * x        (x) float64 5.574e+05 5.574e+05 5.574e+05 ... 5.673e+05 5.674e+05</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># select nearest point and plot timeserie</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">timeseries</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xcen</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ycen</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;mean NDVI&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;ko-&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fc598f7e2e8&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/pangeo/landsat8-cog-ndvi_galaxy_33_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Plot-subset-of-all-NDVI-arrays-at-full-resolution-for-acquisitions-in-2015">Plot subset of all NDVI arrays at full resolution for acquisitions in 2015<a class="anchor-link" href="#Plot-subset-of-all-NDVI-arrays-at-full-resolution-for-acquisitions-in-2015"> </a></h3>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s1">&#39;2015-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2016-01-01&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">col_wrap</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;xarray.plot.facetgrid.FacetGrid at 0x7fc5b1d096a0&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/pangeo/landsat8-cog-ndvi_galaxy_35_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="In-conclusion">In conclusion<a class="anchor-link" href="#In-conclusion"> </a></h2><ul>
+<li>This notebook demonstrates the power of storing data publically in the Cloud as optimized geotiffs - scientists can conduct scalable analysis without downloading the data to a local machine. Only derived subsets and figures need to be downloaded!</li>
+<li>We used a crude NDVI calculation, designed to demonstrate the syntax and tools - a proper analysis should take into account cloud masks and other corrections</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+ 
+
+
+    </main>
+    
+            </div>
+            <div class="c-textbook__footer" id="textbook_footer">
+              
+<nav class="c-page__nav">
+  
+    
+    
+
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/Norway_Sweden_training/pangeo/intake_ESM_example.html">
+      〈 <span class="u-margin-right-tiny"></span> Intake ESM example
+    </a>
+  
+
+  
+    
+
+    
+    <a id="js-page__nav__next" class="c-page__nav__next" href="">
+       <span class="u-margin-right-tiny"></span> 〉
+    </a>
+  
+</nav>
+
+              <footer>
+  <p class="footer">This page was created by <a href="https://github.com/jupyter/jupyter-book/graphs/contributors">The Jupyter Book Community</a></p>
+</footer>
+
+            </div>
+
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
