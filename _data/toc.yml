@@ -33,7 +33,7 @@
 - title: How to use climate data for Olive farming in Andalusia
   url: /c3s/intro
   not_numbered: true
-  expand_sections: false
+  expand_sections: true
   sections:
   - title: Juan's olive grove - temperature
     url: /c3s/OliveGroveTemperatureERA5
@@ -43,7 +43,7 @@
 - title: The alps a dying ski tourism station
   url: /c3s/alps
   not_numbered: true
-  expand_sections: false
+  expand_sections: true
   sections:
   - title: RATECE-PLANICA ski station (Slovenia) under CMIP-5 RCP 8.5 condition
     url: /c3s/artificial_snow_RCP8_5_Kranksja
@@ -53,7 +53,7 @@
 - title: Pangeo 
   url: /pangeo/intro
   not_numbered: true
-  expand_sections: false
+  expand_sections: true
   sections:
   - title: Basic search and load
     url: /pangeo/basic_search_and_load
