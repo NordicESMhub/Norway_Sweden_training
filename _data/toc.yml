@@ -50,6 +50,9 @@
   - title: RATECE-PLANICA ski station (Slovenia) under CMIP-6 SSP585 conditio
     url: /c3s/artificial_snow_cmpi6_ssp585_Kranksja
 
+# Add a header and sample content section
+- header: Climate analysis with Pangeo
+
 - title: Pangeo 
   url: /pangeo/intro
   not_numbered: true
@@ -61,6 +64,13 @@
     url: /pangeo/intake_ESM_example
   - title: Landsat 8 NDVI Analysis on the Cloud
     url: /pangeo/landsat8-cog-ndvi_galaxy
+  - title: CMIP6 Precipitation Frequency Analysis Example
+    url: /pangeo/precip_frequency_change
+  - title: Search and Load CMIP6 Data via ESGF OPeNDAP
+    url: /pangeo/search_and_load_with_esgf_opendap
+  - title: Plot CMIP6 Data with xarray
+    url: /pangeo/CMIP6_example
+
 
 # Divider for meta-pages and content page
 - divider: true
